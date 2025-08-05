@@ -24,7 +24,8 @@ function addToLedger() {
     date:formatted,
     invoiceNo: invoiceNo, 
     receipt:[...accessoryData.map((obj, index) =>({id: index +1, item: obj.Item, quantity: obj.Quantity, 
-        price: obj.Price, total: obj.Total}))] ,grandTotal:grandTotal
+        price: obj.Price, total: obj.Total}))] ,
+        grandTotal:grandTotal
     }
         setLedgerData(prev => [...prev,updated]);
  setReceiptTotal(prev =>[...prev, grandTotal]);
