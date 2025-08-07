@@ -31,6 +31,7 @@ function addToLedger() {
  setReceiptTotal(prev =>[...prev, grandTotal]);
             setAccessoryData([]);
             setDisplay('');
+           console.log(updated);
            
  }
  

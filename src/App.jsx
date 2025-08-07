@@ -6,14 +6,16 @@ import{ Button,Paper, Toolbar,Fade,Container, Menu,MenuItem, Divider} from '@mui
 import './App.css';
 import AccessoryInvoice from './components/AccessoryInvoice';
 import { StoreProvider } from './components/StoreProvider';
-
 import AccessoryReceipt from './components/AccessoryReceipt';
 import Ledger from './components/Ledger';
+import Receipts from './components/Receipts';
 
-const pages = ['Expenses', 'Receipts', 'Ledger'];
+
 
 
 function App() {
+  
+const pages = ['Expenses', 'Receipts', 'Ledger'];
  const [display, setDisplay]=useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
   // const [showAccessories, setShowAccessories]=useState(false);
@@ -27,13 +29,7 @@ function App() {
 
   const handleClose = (event) => {
     const accountName=event.target.innerText;
-    // if (accountName ==='Accessories') {
-    //   // setShowAccessories(true);
-    //   setDisplay('Accessories')
-    //  setAccount('Accessories');
-    //  setInvoiceNo( Math.floor(1000 + Math.random()* 9000));
-      
-    // }    
+ 
     switch (accountName) {
   case 'Accessories':
     setDisplay('Accessories');
@@ -44,6 +40,11 @@ function App() {
  case 'Ledger':
     setDisplay(' Ledger');
     setAccount('Ledger');
+    break;
+
+ case 'Receipts':
+    setDisplay('Receipts');
+    setAccount('Receipts');
     break;
 
   default:
@@ -115,6 +116,7 @@ function App() {
       {display == 'Accessories' && <AccessoryInvoice heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay} />}
        {display == 'Accessories'  && <AccessoryReceipt heading={heading} account={account} invoiceNo={invoiceNo}  setDisplay={setDisplay}/>}
       {display == 'Ledger' &&<Ledger  heading={heading} />}
+      {display == 'Receipts' &&<Receipts  heading={heading} />}
     </Paper>
    </div>
    </StoreProvider>
