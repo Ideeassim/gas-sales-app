@@ -1,7 +1,7 @@
 import {React, useContext} from 'react'
 import { StoreContext } from './StoreContext'
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import axios from 'axios';
 
 const AccessoryReceipt = ({heading, invoiceNo, setDisplay}) => {
     const {accessoryData, setAccessoryData, 
@@ -32,6 +32,20 @@ function addToLedger() {
             setAccessoryData([]);
             setDisplay('');
            console.log(updated);
+
+             // 1. Send to backend
+ axios.post('/api/invoices', updated)
+    .then(res => {
+      console.log('Saved to DB:', res.data);
+      // 2. Update context for immediate UI update
+      setLedgerData(prev => [...prev, res.data]);
+      setReceiptTotal(prev => [...prev, grandTotal]);
+      setAccessoryData([]);
+      setDisplay('');
+    })
+    .catch(err => {
+      console.error('Error saving invoice:', err);
+    });
            
  }
  

@@ -9,13 +9,14 @@ import { StoreProvider } from './components/StoreProvider';
 import AccessoryReceipt from './components/AccessoryReceipt';
 import Ledger from './components/Ledger';
 import Receipts from './components/Receipts';
+import Expense from './components/Expense';
 
 
 
 
 function App() {
   
-const pages = ['Expenses', 'Receipts', 'Ledger'];
+const pages = ['Expense', 'Receipts', 'Ledger'];
  const [display, setDisplay]=useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
   // const [showAccessories, setShowAccessories]=useState(false);
@@ -45,6 +46,11 @@ const pages = ['Expenses', 'Receipts', 'Ledger'];
  case 'Receipts':
     setDisplay('Receipts');
     setAccount('Receipts');
+    break;
+
+ case 'Expense':
+    setDisplay('Expense');
+    setAccount('Expense');
     break;
 
   default:
@@ -117,6 +123,7 @@ const pages = ['Expenses', 'Receipts', 'Ledger'];
        {display == 'Accessories'  && <AccessoryReceipt heading={heading} account={account} invoiceNo={invoiceNo}  setDisplay={setDisplay}/>}
       {display == 'Ledger' &&<Ledger  heading={heading} />}
       {display == 'Receipts' &&<Receipts  heading={heading} />}
+      {display == 'Expense' &&<Expense  heading={heading} />}
     </Paper>
    </div>
    </StoreProvider>

@@ -8,6 +8,7 @@ export const StoreProvider = ({ children }) => {
   const [accessoryData, setAccessoryData] = useState([]);
   const [ledgerData, setLedgerData]= useState([]);
   const [receiptTotal, setReceiptTotal]= useState([]);
+    const[expenseToLedger, setExpenseToLedger]=useState([]); 
     //get date
 const today = new Date();
   const day = today.getDate(); // No leading zero
@@ -23,7 +24,8 @@ const formatted = `${day}/${month}/${year}`;
     <StoreContext.Provider value={{ accessoryData, setAccessoryData,
      formatted, ledgerData,
       setLedgerData,
-      receiptTotal, setReceiptTotal
+      receiptTotal, setReceiptTotal,
+      expenseToLedger, setExpenseToLedger
        }}>
       {children}
     </StoreContext.Provider>
