@@ -1,6 +1,6 @@
 import {React, useContext} from 'react'
 import { StoreContext } from './StoreContext'
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Fab, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import axios from 'axios';
 
 const AccessoryReceipt = ({heading, invoiceNo, setDisplay}) => {
@@ -20,6 +20,7 @@ function addToLedger() {
   if (accessoryData.length  ==0) {
     return;
   };
+  //make up ledger
    const updated={ account: 'Accessories',              
     date:formatted,
     invoiceNo: invoiceNo, 
@@ -34,7 +35,7 @@ function addToLedger() {
            console.log(updated);
 
              // 1. Send to backend
- axios.post('/api/invoices', updated)
+ axios.post('http://localhost:5000/api/invoices', updated)
     .then(res => {
       console.log('Saved to DB:', res.data);
       // 2. Update context for immediate UI update
@@ -42,6 +43,7 @@ function addToLedger() {
       setReceiptTotal(prev => [...prev, grandTotal]);
       setAccessoryData([]);
       setDisplay('');
+      alert('Receipt saved!')
     })
     .catch(err => {
       console.error('Error saving invoice:', err);
@@ -52,7 +54,7 @@ function addToLedger() {
  
 
   return (
-    <Paper sx={{marginTop:'100px', padding:'10px'}} elevation={4}>
+    <Paper sx={{marginTop:'100px', padding:'20px'}} elevation={4}>
         <Typography sx={{...heading, p:2 }} >Accessory Receipt</Typography>
         <Typography>Date: {formatted}</Typography>
         <Typography>Invoice No: {invoiceNo}</Typography>
@@ -70,8 +72,8 @@ function addToLedger() {
                     {accessoryData.length>0 && accessoryData.map((data,i) => <TableRow key={i}>
                         <TableCell>{data.Item}</TableCell>
                         <TableCell>{data.Quantity}</TableCell>
-                        <TableCell>{data.Price}</TableCell>
-                        <TableCell>{data.Total}
+                        <TableCell>₦ {data.Price}</TableCell>
+                        <TableCell>₦ {data.Total}
                         <Button sx={{marginLeft:'10px'}} onClick={()=>deleteItem(i)}>remove</Button></TableCell>
                         
                     </TableRow>)}
@@ -79,8 +81,8 @@ function addToLedger() {
                 </TableBody>
             </Table>
         </TableContainer>
-        <Typography>Grand Total: {grandTotal}</Typography>
-        <Button variant='outlined' sx={{backgroundColor:'primary'}} onClick={addToLedger}>save</Button>
+        <Typography sx={{margin:'40px'}}><em>Grand Total</em> : ₦{grandTotal}</Typography>
+        <Fab variant="extended" sx={{margin:'10px',  backgroundColor:'white', color:'#F97A00', borderRadius:'10px'}} onClick={addToLedger}>save</Fab>
         </Paper>
   )
 }

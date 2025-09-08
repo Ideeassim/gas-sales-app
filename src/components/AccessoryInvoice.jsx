@@ -1,7 +1,8 @@
-import { Box, Table, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, InputLabel,Select, MenuItem, TableBody, TextField, Button } from '@mui/material'
+import { InputAdornment, Box, Table, TableCell, TableContainer, TableHead, TableRow, Typography, FormControl, InputLabel,Select, MenuItem, TableBody, TextField, Button } from '@mui/material'
 import { StoreContext } from './StoreContext';
 import{ React, useContext, useState}from 'react';
-
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
 const AccessoryInvoice = ({heading, invoiceNo}) => {
    const {accessoryData, setAccessoryData, formatted} = useContext(StoreContext);
@@ -53,7 +54,7 @@ setAccessoryItem('')
   
   }
 
-
+const accessories=["Standard Valve", "Camping Valve", "Hose", "Hose Clip","Standard Regulator HP", "Standard Regulator LP"]
 
 
   return (
@@ -73,33 +74,42 @@ setAccessoryItem('')
           label="Accessory"
           onChange={handleAccessory}
         >
-          <MenuItem name='Hose' value='Hose'>Hose</MenuItem>
-          <MenuItem name='CampingValve' value='Camping Valve'>Camping Valve</MenuItem>
-          <MenuItem name='StandardValve' value='Standard Valve'>StandardValve</MenuItem>
+         {accessories.map((item, index) => <MenuItem key={index} name={item} value={item}>{item}</MenuItem>)} 
+      
         </Select>
       </FormControl>
     </Box>
-    <TableContainer>    
+    <TableContainer sx={{marginTop:'10px'}}>    
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>item</TableCell>
-          <TableCell>quantity</TableCell>
-          <TableCell>price</TableCell>
-          <TableCell>total</TableCell>
+          <TableCell> Item</TableCell>
+          <TableCell>Quantity</TableCell>
+          <TableCell>Price</TableCell>
+          <TableCell>Total</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         <TableRow>
           <TableCell><TextField name='Item' value={accessoryItem}/></TableCell>
-          <TableCell><TextField  onChange={handleChange} name='Quantity' value={accessoryInput.Quantity}/></TableCell>
-          <TableCell><TextField onChange={handleChange} name='Price' value={accessoryInput.Price}/></TableCell>
-          <TableCell><TextField onChange={handleChange} name='Total' value={accessoryInput.Total}  InputProps={{ readOnly: true }}/></TableCell>
+          <TableCell><TextField  onChange={handleChange} name='Quantity' value={accessoryInput.Quantity} type='number'/></TableCell>
+          <TableCell><TextField onChange={handleChange} name='Price' value={accessoryInput.Price}  slotProps={{
+            input: {
+              startAdornment: <InputAdornment position="start">₦</InputAdornment>,
+            }}}/></TableCell>
+          <TableCell><TextField onChange={handleChange} name='Total' value={accessoryInput.Total}  InputProps={{ readOnly: true }} slotProps={{
+            input: {
+              startAdornment: <InputAdornment position="start">₦</InputAdornment>,
+            }}}/></TableCell>
         </TableRow>
        
       </TableBody>
     </Table>
-    </TableContainer> <Button onClick={handleSave}>save</Button>
+    </TableContainer>
+
+            <Fab onClick={handleSave} sx={{ backgroundColor:'white', color:'#F97A00', margin:'10px'}} ><AddIcon /></Fab>
+    
+
   </Box>
     
   )

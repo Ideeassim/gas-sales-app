@@ -10,8 +10,9 @@ import AccessoryReceipt from './components/AccessoryReceipt';
 import Ledger from './components/Ledger';
 import Receipts from './components/Receipts';
 import Expense from './components/Expense';
-
-
+import DomidI from './components/DomidI';
+import DomidII from './components/DomidII';
+import CylinderGas from './components/Cylinder';
 
 
 function App() {
@@ -38,6 +39,25 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
     setInvoiceNo(Math.floor(1000 + Math.random() * 9000));
     break;
 
+    case 'Domid I':
+     setDisplay('domid I');
+     setAccount('Domid I');
+     setInvoiceNo(Math.floor(1000 + Math.random() * 9000));
+      break;
+
+    case 'Domid II':
+     setDisplay('domid II');
+     setAccount('Domid II');
+     setInvoiceNo(Math.floor(1000 + Math.random() * 9000));
+      break;
+
+    case 'Cylinder Gas':
+     setDisplay('cylinder gas');
+     setAccount('Cylinder Gas');
+     setInvoiceNo(Math.floor(1000 + Math.random() * 9000));
+      break;
+ 
+
  case 'Ledger':
     setDisplay(' Ledger');
     setAccount('Ledger');
@@ -60,26 +80,30 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
 }
 
     setAnchorEl(null);   
+    console.log(accountName);
+    
   };
 
   const heading={
-    color:'#FF7601',
+    color:'#57564F',
     margin:'0 auto',
     fontSize:'2rem',
     textAlign: 'center'
     
   }
  function changePage(page) {
-  setDisplay(page);
-  
+  setDisplay(page);  
  }
+
+
+
   return (
     <StoreProvider>
    <div className='container'>
-      <AppBar position="static" sx={{backgroundColor:'grey', color:'white', marginBottom:'50px'}}>
+      <AppBar position="static" sx={{backgroundColor:'#ffffff', color:'#57564F', marginBottom:'50px'}}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Button sx={{color:'white'}}
+        <Toolbar disableGutters sx={{gap:5}} >
+          <Button sx={{color:'#37353E',fontSize:'1.2rem'}}
           id="fade-button"
         aria-controls={open ? 'fade-menu' : undefined}
         aria-haspopup="true"
@@ -102,28 +126,35 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
         </MenuItem>
         <Divider sx={{ my: 0.2 }} />
         <MenuItem onClick={handleClose} >
-         domid I
+         Domid I
         </MenuItem>
         <Divider sx={{ my: 0.5 }} />
         <MenuItem onClick={handleClose} >
           Domid II
         </MenuItem>
+        <Divider sx={{ my: 0.5 }} />
+        <MenuItem onClick={handleClose} >
+          Cylinder Gas
+        </MenuItem>
         
     </Menu>
 
 
-            {pages.map((page,index)=><Button key={index} sx={{color:'white'}}
+            {pages.map((page,index)=><Button key={index} sx={{color:'#37353E',fontSize:'1.2rem'}}
             onClick={()=>changePage(page)}>
               {page}</Button>)}
         </Toolbar>
       </Container>
     </AppBar>
-    <Paper sx={{marginTop:'200px', height:'auto', width:'70%', margin:'0 auto', padding:'50px'}}>
+    <Paper sx={{marginTop:'200px', height:'auto', width:'80%', margin:'0 auto', padding:'50px'}}>
       {display == 'Accessories' && <AccessoryInvoice heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay} />}
        {display == 'Accessories'  && <AccessoryReceipt heading={heading} account={account} invoiceNo={invoiceNo}  setDisplay={setDisplay}/>}
       {display == 'Ledger' &&<Ledger  heading={heading} />}
       {display == 'Receipts' &&<Receipts  heading={heading} />}
       {display == 'Expense' &&<Expense  heading={heading} />}
+      {display == 'domid I' && <DomidI heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
+      {display == 'domid II' && <DomidII heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
+      {display == 'cylinder gas' && <CylinderGas heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
     </Paper>
    </div>
    </StoreProvider>
