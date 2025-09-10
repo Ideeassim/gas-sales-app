@@ -110,7 +110,7 @@ const filteredData = ledgerData.filter(item => {
             </Select>
           </FormControl></Box>
           <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap'}}>
-            {filteredData.length === 0 ? (<Typography>no data</Typography>) : filteredData.map((receipt, index) =>
+            {filteredData.length === 0 ? (<Typography sx={{margin:'0 auto', color:'#57564F'}}>No Data...</Typography>) : filteredData.map((receipt, index) =>
           <Paper key={index} sx={{ width:'43%', margin:'15px', padding:2}} elevation={4}>
             <Box sx={{display:'flex', gap:'10px'}} className="receiptBox">
             <p>Acc: <span style={{color:'#FF7601'}}>{receipt.account}</span></p>

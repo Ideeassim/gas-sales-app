@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StoreContext } from './StoreContext';
-import {FormControl, InputLabel, Select, MenuItem, Box, CircularProgress, Paper, Table,TableBody,TableCell, TableContainer, TableHead, TableRow, Typography, Button } from '@mui/material';
+import {FormControl, InputLabel, Select, MenuItem, Box, CircularProgress, Paper, Table,TableBody,TableCell, TableContainer, TableHead, TableRow, Typography, Button, Divider } from '@mui/material';
 import axios from 'axios';
 import { Fade } from '@mui/material';
 
@@ -173,7 +173,7 @@ function deleteItem(invoice) {
 
   return (
     <Fade in={!loading} timeout={600}>
- < Paper>
+ < Paper sx={{padding:3}}>  
  <Box sx={{display:'flex', gap: 5}}>
       <FormControl sx={{width: 'fit-content', minWidth:'7rem'}}>
       <InputLabel id="month-label">Month</InputLabel>
@@ -201,7 +201,9 @@ function deleteItem(invoice) {
  <Box sx={{display:'flex', gap:4, marginY:5, padding:3}}>   <Typography variant='h6' sx={{color: '#2e2c2aff'}}>Ledger Total:  <span style={{color:'green'}}>₦{ledgerTotal}</span></Typography>
     <Typography variant='h6' sx={{color: '#2e2c2aff'}}>Net Profit: <span style={{color:'green'}}>₦{netProfit}</span></Typography>
     <Typography variant='h6' sx={{color: '#2e2c2aff'}}>Total Expense: <span style={{color:'green'}}>₦{expTotal}</span></Typography>
-    
+     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper", p: 2 }}>
+      
+    </Box>
     </Box>
 
     <TableContainer>
@@ -215,7 +217,7 @@ function deleteItem(invoice) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredLedgerData.length === 0 && filteredExpenses.length === 0 ? (<TableRow><TableCell>no data</TableCell></TableRow>): (filteredLedgerData.map((obj, index) =>
+          {filteredLedgerData.length === 0 && filteredExpenses.length === 0 ? (<Typography sx={{margin:'0 auto', color:'#57564F'}}>No Data...</Typography>): (filteredLedgerData.map((obj, index) =>
           <TableRow key={index}>
             <TableCell sx={{ color:'green'}}>{obj.date}</TableCell>
             <TableCell  sx={{ color:'green'}}>{obj.invoiceNo}</TableCell>

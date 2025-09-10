@@ -1,7 +1,9 @@
-import { Box, Paper, Typography, FormControl, InputLabel, MenuItem, Select, TextField, Button, CircularProgress,Table, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+import { Box,Dialog, DialogActions,DialogContent, DialogContentText, DialogTitle, Paper, Typography, FormControl, InputLabel, MenuItem, Select, TextField, Button, CircularProgress,Table, TableContainer, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import { StoreContext } from './StoreContext';
 import axios from 'axios';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 
 const Expense = ({heading}) => {
 const[cylData, setCylData]= useState([]);
@@ -49,7 +51,9 @@ const[viewExp, setViewExp]=useState(true)
   }
 
   useEffect(() => {
-    fetchLedgerData();
+    fetchLedgerData(); 
+ 
+    
   }, []);
 
 const{ledgerData, formatted,  setExpenseToLedger, setLedgerData }= useContext(StoreContext);
@@ -61,7 +65,7 @@ const{ledgerData, formatted,  setExpenseToLedger, setLedgerData }= useContext(St
 
  
 const [account, setAccount] =useState('');
-
+const[open, setOpen]=useState(false)
 const[expenseInput, setExpenseInput] =useState({
       date:'',
       InvoiceNo:'',
@@ -135,7 +139,7 @@ const [acct, setAcct]=useState('');
     .catch(err => {
       console.error('Error saving expense:', err);
     }); 
-      
+     setOpen(true); 
   }
   if (loading) {
     return (
@@ -148,6 +152,8 @@ const [acct, setAcct]=useState('');
   function addExpense() {
     setAddExp(true);
     setViewExp(false);
+ 
+    
   }
 
   function viewExpense() {
@@ -187,17 +193,23 @@ const filteredExpenses = expData.filter(exp => {
 });
 
 //calculate filtered total expense
-const totalExp= filteredExpenses.reduce((sum, item)=> sum + Number(item.Amount), 0 )
+const totalExp= filteredExpenses.reduce((sum, item)=> sum + Number(item.Amount), 0 );
+
+function handleClose() {
+     setOpen(false);
+     setViewExp(true);
+    setAddExp(false);
+}
   return (
     <Box>
        <Typography sx={heading}>Expense</Typography> 
-       <Box sx={{display:'flex', justifyContent:'space-evenly', marginTop:'20px'}}>
+       <Box sx={{display:'flex', justifyContent:'space-evenly', marginTop:'20px', marginBottom:'20px'}}>
         <Button variant='outlined' onClick={addExpense}>+ Add Expense</Button>
        <Button variant='outlined' onClick={viewExpense}>View Expenses</Button></Box>
        
        {addExp && <Box>
         <Typography>Expense from: </Typography>
-        <FormControl sx={{width:'9rem', marginTop:'10px'}}>
+        <FormControl sx={{width:'9rem', marginTop:'15px'}}>
         <InputLabel id="demo-simple-select-label" sx={{paddingTop:0, marginTop:-1.5}}>Account</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -215,14 +227,14 @@ const totalExp= filteredExpenses.reduce((sum, item)=> sum + Number(item.Amount),
           <MenuItem value='Cylinder Gas'>Cylinder Gas</MenuItem>
         </Select>
       </FormControl>
-      <Box sx={{display:'flex', alignItems:'center', gap:2, marginTop:'10px'}}> 
+      <Box sx={{display:'flex', alignItems:'center', gap:2, marginTop:'20px'}}> 
         <Typography>Date: {formatted}</Typography>
         <Typography>Invoice No: {invoiceNo}</Typography>
        
          
         </Box>
-        <Box sx={{display:'flex', flexDirection:'column', gap:3}}>
-       <Typography variant='h6'>Balance:₦ {account === 'Accessories' ? accTotal : account=== 'Domid I' ? domidTotal: account === 'Domid II' ? domid2Total : account === 'Cylinder Gas' ? cylTotal: 'select account' } </Typography>
+        <Box sx={{display:'flex', flexDirection:'column', gap:3, marginTop:'15px'}}>
+       {/* <Typography variant='h6'>Balance:₦ {account === 'Accessories' ? accTotal : account=== 'Domid I' ? domidTotal: account === 'Domid II' ? domid2Total : account === 'Cylinder Gas' ? cylTotal: 'select account' } </Typography> */}
        <TextField label='Amount'sx={{ width: '10%' }} onChange={handleInput} name='Amount' value={expenseInput.Amount}></TextField>
        <TextField label='Narration' sx={{ width: '70%' }}
         id="outlined-multiline-static"
@@ -230,10 +242,28 @@ const totalExp= filteredExpenses.reduce((sum, item)=> sum + Number(item.Amount),
           rows={4} onChange={handleInput} name='Narration' value={expenseInput.Narration}></TextField>
          
       </Box> <Button variant='outlined' sx={{marginY:'10px'}} onClick={handleSave}>Save</Button>
+      {/* dialog */}
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+       
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          Expense Saved Successfully! 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          
+        </DialogActions>
+      </Dialog>
      </Box>}
 
      {viewExp && <Paper elevation={3} sx={{padding:'10px', margin:'20px'}}>
-      <Box sx={{display:'flex', gap:5, marginTop:4}}>
+      <Box sx={{display:'flex', gap:5, marginTop:4, marginBottom:4}}>
         <FormControl sx={{width: 'fit-content', minWidth:'7rem'}}>
             <InputLabel id="month-label">Month</InputLabel>
         <Select
@@ -270,8 +300,7 @@ const totalExp= filteredExpenses.reduce((sum, item)=> sum + Number(item.Amount),
             </TableRow>    
           </TableHead>
           <TableBody>
-            {filteredExpenses.length === 0 ?<TableRow>
-             <TableCell>No Data</TableCell></TableRow> : (filteredExpenses.map((exp, index) =>
+            {filteredExpenses.length === 0 ?<Typography sx={{margin:'0 auto', color:'#57564F'}}>No Data...</Typography> : (filteredExpenses.map((exp, index) =>
              <TableRow key={index}>
               <TableCell sx={{ color:'red'}}>{exp.Date}</TableCell>
               <TableCell sx={{ color:'red'}}>{exp.InvoiceNo}</TableCell>

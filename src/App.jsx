@@ -1,8 +1,8 @@
 import { useState, useContext } from 'react';
-import { StoreContext } from './components/StoreContext';
+
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import{ Button,Paper, Toolbar,Fade,Container, Menu,MenuItem, Divider} from '@mui/material';
+import{ Button,Paper, Toolbar,Fade,Container, Menu,MenuItem, Divider, Stack} from '@mui/material';
 import './App.css';
 import AccessoryInvoice from './components/AccessoryInvoice';
 import { StoreProvider } from './components/StoreProvider';
@@ -103,6 +103,7 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
       <AppBar position="static" sx={{backgroundColor:'#ffffff', color:'#57564F', marginBottom:'50px'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{gap:5}} >
+       
           <Button sx={{color:'#37353E',fontSize:'1.2rem'}}
           id="fade-button"
         aria-controls={open ? 'fade-menu' : undefined}
@@ -137,12 +138,17 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
           Cylinder Gas
         </MenuItem>
         
-    </Menu>
-
-
+    </Menu><Divider orientation="vertical" flexItem variant="middle"/>
+                <Stack
+           direction="row"
+          spacing={1}
+          divider={<Divider orientation="vertical" flexItem />}
+          >
+          
             {pages.map((page,index)=><Button key={index} sx={{color:'#37353E',fontSize:'1.2rem'}}
             onClick={()=>changePage(page)}>
               {page}</Button>)}
+              </Stack>
         </Toolbar>
       </Container>
     </AppBar>

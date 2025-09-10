@@ -1,9 +1,11 @@
-import {React, useContext} from 'react'
+import {React, useContext, useState} from 'react'
 import { StoreContext } from './StoreContext'
-import { Fab, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Fab, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Dialog, DialogActions,DialogContent, DialogContentText } from '@mui/material';
 import axios from 'axios';
 
 const AccessoryReceipt = ({heading, invoiceNo, setDisplay}) => {
+const[open, setOpen]=useState(false);
+
     const {accessoryData, setAccessoryData, 
         formatted, setLedgerData,
     receiptTotal, setReceiptTotal}=useContext(StoreContext);
@@ -30,28 +32,35 @@ function addToLedger() {
     }
         setLedgerData(prev => [...prev,updated]);
  setReceiptTotal(prev =>[...prev, grandTotal]);
-            setAccessoryData([]);
-            setDisplay('');
-           console.log(updated);
+            // setAccessoryData([]);
+          //   setDisplay('');
+          //  console.log(updated);
 
              // 1. Send to backend
  axios.post('http://localhost:5000/api/invoices', updated)
     .then(res => {
       console.log('Saved to DB:', res.data);
+      setOpen(true);
       // 2. Update context for immediate UI update
       setLedgerData(prev => [...prev, res.data]);
       setReceiptTotal(prev => [...prev, grandTotal]);
+      
       setAccessoryData([]);
-      setDisplay('');
-      alert('Receipt saved!')
+      
+       
     })
     .catch(err => {
       console.error('Error saving invoice:', err);
     });
+          
+      
            
  }
  
- 
+ function handleClose() {
+     setOpen(false);
+     setDisplay('');
+ }
 
   return (
     <Paper sx={{marginTop:'100px', padding:'20px'}} elevation={4}>
@@ -83,6 +92,24 @@ function addToLedger() {
         </TableContainer>
         <Typography sx={{margin:'40px'}}><em>Grand Total</em> : ₦{grandTotal}</Typography>
         <Fab variant="extended" sx={{margin:'10px',  backgroundColor:'white', color:'#F97A00', borderRadius:'10px'}} onClick={addToLedger}>save</Fab>
+              {/* dialog */}
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+       
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          Invoice Saved Successfully! 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          
+        </DialogActions>
+      </Dialog>
         </Paper>
   )
 }
