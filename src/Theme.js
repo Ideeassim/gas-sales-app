@@ -46,7 +46,25 @@ const theme = createTheme({
           },
         }
       }
-    }
+    },
+     MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#FAA533",
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused": {
+            color: "#FAA533",
+          },
+        },
+      },
+    },
   },
 });
 

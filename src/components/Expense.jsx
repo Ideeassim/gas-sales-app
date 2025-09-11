@@ -2,7 +2,8 @@ import { Box,Dialog, DialogActions,DialogContent, DialogContentText, DialogTitle
 import React, { useContext, useEffect, useState } from 'react'
 import { StoreContext } from './StoreContext';
 import axios from 'axios';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
 const Expense = ({heading}) => {
@@ -12,7 +13,7 @@ const[domid2Data, setDomid2Data]=useState([]);
 const[AccData, setAccData]=useState([]);
 const[expData, setExpData]=useState([]);
 const [loading, setLoading] = useState(true); // loading state
-const [error, setError] = useState(null);
+const [error, setError] = useState(false);
 const [addExp, setAddExp]=useState(false)
 const[viewExp, setViewExp]=useState(true)
 
@@ -123,6 +124,8 @@ const [acct, setAcct]=useState('');
 
         axios.post('http://localhost:5000/api/expenses', expenseInput)
     .then(res => {
+       setOpen(true);
+      setError(false);
       console.log('Expense saved:', res.data);
       // Optionally update context or state here
        setExpenseToLedger(prev =>[...prev, res.data]);
@@ -137,9 +140,11 @@ const [acct, setAcct]=useState('');
     setAccount('')
     })
     .catch(err => {
+       setOpen(true);
+          setError(true);
       console.error('Error saving expense:', err);
     }); 
-     setOpen(true); 
+     
   }
   if (loading) {
     return (
@@ -251,9 +256,11 @@ function handleClose() {
       >
        
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          Expense Saved Successfully! 
-          </DialogContentText>
+          {error?(<DialogContentText  id="alert-dialog-description">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>Unable to save expense <CancelIcon color='error'/></Box></DialogContentText>)  :(
+            <DialogContentText id="alert-dialog-description"><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          Expense saved successfully! <CheckCircleOutlineIcon color='success'/></Box>
+          </DialogContentText>)}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

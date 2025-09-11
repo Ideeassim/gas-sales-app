@@ -1,10 +1,13 @@
 import {React, useContext, useState} from 'react'
 import { StoreContext } from './StoreContext'
-import { Fab, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Dialog, DialogActions,DialogContent, DialogContentText } from '@mui/material';
+import { Fab, Button, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Dialog, DialogActions,DialogContent, DialogContentText } from '@mui/material';
 import axios from 'axios';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const AccessoryReceipt = ({heading, invoiceNo, setDisplay}) => {
 const[open, setOpen]=useState(false);
+const[error, setError]=useState(false);
 
     const {accessoryData, setAccessoryData, 
         formatted, setLedgerData,
@@ -32,13 +35,12 @@ function addToLedger() {
     }
         setLedgerData(prev => [...prev,updated]);
  setReceiptTotal(prev =>[...prev, grandTotal]);
-            // setAccessoryData([]);
-          //   setDisplay('');
-          //  console.log(updated);
-
+ 
              // 1. Send to backend
  axios.post('http://localhost:5000/api/invoices', updated)
     .then(res => {
+       setOpen(true);
+        setError(false)
       console.log('Saved to DB:', res.data);
       setOpen(true);
       // 2. Update context for immediate UI update
@@ -50,6 +52,8 @@ function addToLedger() {
        
     })
     .catch(err => {
+              setError(true)
+            setOpen(true);
       console.error('Error saving invoice:', err);
     });
           
@@ -101,9 +105,11 @@ function addToLedger() {
       >
        
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          Invoice Saved Successfully! 
-          </DialogContentText>
+        {error?(<DialogContentText  id="alert-dialog-description">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>Unable to save invoice <CancelIcon color='error'/></Box></DialogContentText>)  :(
+            <DialogContentText id="alert-dialog-description"><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          Invoice saved successfully! <CheckCircleOutlineIcon color='success'/></Box>
+          </DialogContentText>)}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

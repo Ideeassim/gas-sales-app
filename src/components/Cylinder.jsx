@@ -1,11 +1,15 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography, Dialog, DialogActions,DialogContent, DialogContentText } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react'
 import { StoreContext } from './StoreContext';
 import axios from 'axios';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 const CylinderGas = ({heading, invoiceNo,setDisplay}) => {
   const {formatted, setLedgerData, ledgerData}= useContext(StoreContext);
-
+const[open, setOpen]=useState(false);
+const[error, setError]=useState(false)
 //uptake inputs
 const[cylData, setCylData]=useState({
   account:'Cylinder Gas',
@@ -67,17 +71,30 @@ setCylData(updated);
     //send to backend
     axios.post('http://localhost:5000/api/cylinderInvoices', updated)
     .then(res => {
+         setOpen(true);
+        setError(false)
       console.log('Saved to DB:', res.data);
       // 2. Update context for immediate UI update
       setLedgerData(prev => [...prev, res.data]);
       
-      setDisplay('');
-    })
+          })
         .catch(err => {
+          
+         
+          setError(true)
+            setOpen(true);
       console.error('Error saving invoice:', err);
+ 
+      
     });
   };
 
+   function handleClose() {
+    
+     setOpen(false);
+     setDisplay('');
+    
+ }
 
   return (
     <Box>
@@ -91,6 +108,26 @@ setCylData(updated);
        
     </Box>
 <Button variant='outlined' sx={{marginTop: '20px'}} onClick={addDomid}>Save</Button>
+ {/* dialog */}
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+       
+        <DialogContent sx={{display:'flex', alignItems:'center'}}>
+          {error?(<DialogContentText  id="alert-dialog-description">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>Unable to save invoice <CancelIcon color='error'/></Box></DialogContentText>)  :(
+            <DialogContentText id="alert-dialog-description"><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          Invoice saved successfully! <CheckCircleOutlineIcon color='success'/></Box>
+          </DialogContentText>)}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          
+        </DialogActions>
+      </Dialog>
 </Box>)}
 
 export default CylinderGas;

@@ -1,10 +1,15 @@
-import { Box, Button, Fab, TextField, Typography } from '@mui/material';
+import { Box, Button, Fab, TextField, Typography, Dialog, DialogActions,DialogContent, DialogContentText } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react'
 import { StoreContext } from './StoreContext';
 import axios from 'axios';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const DomidII = ({heading, invoiceNo,setDisplay}) => {
   const {formatted, setLedgerData, ledgerData}= useContext(StoreContext);
+const[open, setOpen]=useState(false);
+const[error, setError]=useState(false);
+
 
 //uptake inputs
 const[domidInput2, setDomidInput2]=useState({
@@ -64,17 +69,25 @@ const cashGiven = parseFloat(domidInput2.cashGiven) || 0;
     //send to backend
     axios.post('http://localhost:5000/api/domid2Invoices', updated)
     .then(res => {
+      setOpen(true);
+         setError(false)
       console.log('Saved to DB:', res.data);
       // 2. Update context for immediate UI update
       setLedgerData(prev => [...prev, res.data]);
       
-      setDisplay('');
+      
     })
         .catch(err => {
+          setError(true);
+          setOpen(true)
       console.error('Error saving invoice:', err);
     });
   };
 
+     function handleClose() {
+     setOpen(false);
+     setDisplay('');
+ }
 
   return (
     <Box>
@@ -88,6 +101,27 @@ const cashGiven = parseFloat(domidInput2.cashGiven) || 0;
             <TextField name='Profit' label='Profit' value={Profit}/>
     </Box>
 <Fab  sx={{margin:'15px',  backgroundColor:'white', color:'#F97A00', borderRadius:'10px'}} variant='outlined' onClick={addDomid}>Save</Fab>
+ {/* dialog */}
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+       
+    
+        <DialogContent sx={{display:'flex', alignItems:'center'}}>
+          {error?(<DialogContentText  id="alert-dialog-description">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>Unable to save invoice <CancelIcon color='error'/></Box></DialogContentText>)  :(
+            <DialogContentText id="alert-dialog-description"><Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          Invoice saved successfully! <CheckCircleOutlineIcon color='success'/></Box>
+          </DialogContentText>)}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          
+        </DialogActions>
+      </Dialog>
 </Box>)}
 
 export default DomidII;

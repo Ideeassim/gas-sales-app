@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import{ Button,Paper, Toolbar,Fade,Container, Menu,MenuItem, Divider, Stack} from '@mui/material';
+import{ Button,Paper, Toolbar,Fade,Container, Menu,MenuItem, Divider, Stack, Box, Typography, FormControl} from '@mui/material';
 import './App.css';
 import AccessoryInvoice from './components/AccessoryInvoice';
 import { StoreProvider } from './components/StoreProvider';
@@ -13,13 +13,17 @@ import Expense from './components/Expense';
 import DomidI from './components/DomidI';
 import DomidII from './components/DomidII';
 import CylinderGas from './components/Cylinder';
-
+import Login from './components/Login';
+import MainApp from './components/MainApp';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
   
 const pages = ['Expense', 'Receipts', 'Ledger'];
  const [display, setDisplay]=useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
+const[hasLoggedIn, setHasLoggedIn]=useState(false);
+
   // const [showAccessories, setShowAccessories]=useState(false);
  const [account, setAccount] =useState('');
   const[invoiceNo, setInvoiceNo]=useState('')
@@ -98,72 +102,29 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
 
 
   return (
-    <StoreProvider>
-   <div className='container'>
-      <AppBar position="static" sx={{backgroundColor:'#ffffff', color:'#57564F', marginBottom:'50px'}}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{gap:5}} >
-       
-          <Button sx={{color:'#37353E',fontSize:'1.2rem'}}
-          id="fade-button"
-        aria-controls={open ? 'fade-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-          >Sales</Button>    
-          <Menu
-           id="fade-menu"
-        slotProps={{
-          list: {
-            'aria-labelledby': 'fade-button',
-          },
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Fade}>
-        <MenuItem onClick={handleClose} >
-        Accessories
-        </MenuItem>
-        <Divider sx={{ my: 0.2 }} />
-        <MenuItem onClick={handleClose} >
-         Domid I
-        </MenuItem>
-        <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={handleClose} >
-          Domid II
-        </MenuItem>
-        <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={handleClose} >
-          Cylinder Gas
-        </MenuItem>
-        
-    </Menu><Divider orientation="vertical" flexItem variant="middle"/>
-                <Stack
-           direction="row"
-          spacing={1}
-          divider={<Divider orientation="vertical" flexItem />}
-          >
-          
-            {pages.map((page,index)=><Button key={index} sx={{color:'#37353E',fontSize:'1.2rem'}}
-            onClick={()=>changePage(page)}>
-              {page}</Button>)}
-              </Stack>
-        </Toolbar>
-      </Container>
-    </AppBar>
-    <Paper sx={{marginTop:'200px', height:'auto', width:'80%', margin:'0 auto', padding:'50px'}}>
-      {display == 'Accessories' && <AccessoryInvoice heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay} />}
-       {display == 'Accessories'  && <AccessoryReceipt heading={heading} account={account} invoiceNo={invoiceNo}  setDisplay={setDisplay}/>}
-      {display == 'Ledger' &&<Ledger  heading={heading} />}
-      {display == 'Receipts' &&<Receipts  heading={heading} />}
-      {display == 'Expense' &&<Expense  heading={heading} />}
-      {display == 'domid I' && <DomidI heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
-      {display == 'domid II' && <DomidII heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
-      {display == 'cylinder gas' && <CylinderGas heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
-    </Paper>
-   </div>
-   </StoreProvider>
+    
+          <Router>
+      <Routes>
+        <Route
+          path="/login"
+          element={<Login hasLoggedIn={hasLoggedIn} setHasLoggedIn={setHasLoggedIn}/>}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            hasLoggedIn ? (
+                <MainApp/>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+      </Routes>
+    </Router>
+ 
+  
+     
+   
   )
 }
 

@@ -4,9 +4,12 @@
 body{
   background-color: #FAF7F3;
 font-family: "Tirra", sans-serif;
-
+height: 100vh;
   padding: 30px;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .receiptBox >p{
