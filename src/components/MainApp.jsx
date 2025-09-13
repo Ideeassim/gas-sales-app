@@ -14,9 +14,12 @@ import DomidI from './DomidI';
 import DomidII from './DomidII';
 import CylinderGas from './Cylinder';
 import { useNavigate } from "react-router-dom";
+import Home from './home';
+import { IoSettingsOutline } from "react-icons/io5";
+import Settings from './Settings';
 
 
-const MainApp = () => {
+const MainApp = ({username}) => {
 const navigate= useNavigate();
 
 const pages = ['Expense', 'Receipts', 'Ledger'];
@@ -99,11 +102,11 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
    }
 
    function handleLogOut() {
-    navigate('/login')
+    navigate('/')
    }
   return (
      <StoreProvider>
-   <Box sx={{height:'100vh', width:'80rem'}}>
+   <Box sx={{ minHeight: '100vh', width:'80rem'}}>
       <AppBar position="static" sx={{backgroundColor:'#ffffff', color:'#57564F', marginBottom:'50px'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{gap:5}} >
@@ -153,11 +156,21 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
             onClick={()=>changePage(page)}>
               {page}</Button>)}
               </Stack>
-              <Button sx={{marginLeft:'auto',  backgroundColor: 'black', color:'white', '&:hover': { backgroundColor: '#57564F', color:'white', borderRadius:'5px'}}} onClick={handleLogOut}>Log Out</Button>
+              <Box sx={{marginLeft:'auto', display:'flex', gap:3, alignItems:'center'}}>
+                <Box  component="p" style={{color: "#EF7722",
+        display: "flex",
+        alignItems: "center",
+        gap: 5,
+        cursor: "pointer",
+        "&:hover": {
+          color: "#57564F"}}} onClick={()=>setDisplay('Settings')}>{username}<IoSettingsOutline /> </Box>
+              <Button sx={{ height:'30px',  backgroundColor: 'black', color:'white', '&:hover': { backgroundColor: '#57564F', color:'white', borderRadius:'5px'}}} onClick={handleLogOut}>Log Out</Button>
+            </Box>
         </Toolbar>
       </Container>
     </AppBar>
     <Paper sx={{marginTop:'200px', height:'auto', width:'80%', margin:'0 auto', padding:'50px'}}>
+      {display == '' && <Home/>}
       {display == 'Accessories' && <AccessoryInvoice heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay} />}
        {display == 'Accessories'  && <AccessoryReceipt heading={heading} account={account} invoiceNo={invoiceNo}  setDisplay={setDisplay}/>}
       {display == 'Ledger' &&<Ledger  heading={heading} />}
@@ -166,6 +179,7 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
       {display == 'domid I' && <DomidI heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
       {display == 'domid II' && <DomidII heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
       {display == 'cylinder gas' && <CylinderGas heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
+        {display == 'Settings' && <Settings setDisplay={setDisplay}/>}
     </Paper>
    </Box>
    </StoreProvider>

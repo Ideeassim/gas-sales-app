@@ -4,10 +4,12 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import logo from '../assets/logo.png';
 
-const Login = ({setHasLoggedIn}) => {
+
+const Login = ({setHasLoggedIn, username, setUser}) => {
      const [showPassword, setShowPassword] = React.useState(false);
-    const[username, setUser]= useState('');
+    
     const[password, setPassword]=useState('');
       const [message, setMessage] = useState("");
 
@@ -41,11 +43,13 @@ const handleLogin = async () => {
 
 
   return (
-    <Paper sx={{padding:5, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', width:'50rem'}}>
-    <Typography variant='h2' sx={{color:'#57564F'}}>LPG <span style={{color:'#FAA533'}}>SALES</span></Typography>
-   <Box
+    <Paper sx={{padding:5, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', width:'50rem', height:'90vh'}}>
+    {/* <Typography variant='h2' sx={{color:'#57564F'}}>LPG <span style={{color:'#FAA533'}}>SALES</span></Typography> */}
+   <img src={logo} height='400px'/>
+  
+   < Box
       component="form"
-      sx={{ '& > :not(style)': { m: 1, width: '45ch' }, display:'flex', flexDirection:'column', marginTop:'65px' }}
+      sx={{ '& > :not(style)': { m: 1, width: '45ch' }, display:'flex', flexDirection:'column', marginTop:'-10px' }}
       noValidate
       autoComplete="off"
     >
