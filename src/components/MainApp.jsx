@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import Home from './home';
 import { IoSettingsOutline } from "react-icons/io5";
 import Settings from './Settings';
-
+import AddUser from './AddUser';
 
 const MainApp = ({username}) => {
 const navigate= useNavigate();
@@ -180,6 +180,7 @@ const pages = ['Expense', 'Receipts', 'Ledger'];
       {display == 'domid II' && <DomidII heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
       {display == 'cylinder gas' && <CylinderGas heading={heading} invoiceNo={invoiceNo} setDisplay={setDisplay}/>}
         {display == 'Settings' && <Settings setDisplay={setDisplay}/>}
+        {display == 'AddUser' && <AddUser setDisplay={setDisplay}/>}
     </Paper>
    </Box>
    </StoreProvider>
