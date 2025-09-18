@@ -11,10 +11,10 @@ const Receipts = ({heading}) => {
   const fetchLedgerData = () => {
     setLoading(true); // start loading
     Promise.all([
-       axios.get('http://localhost:5000/api/invoices'),
-      axios.get("http://localhost:5000/api/domidInvoices"),
-      axios.get("http://localhost:5000/api/domid2Invoices"),
-      axios.get('http://localhost:5000/api/cylinderInvoices')
+       axios.get('https://gas-sales-app.onrender.com/api/invoices'),
+      axios.get("https://gas-sales-app.onrender.com/api/domidInvoices"),
+      axios.get("https://gas-sales-app.onrender.com/api/domid2Invoices"),
+      axios.get('https://gas-sales-app.onrender.com/api/cylinderInvoices')
       ])
    
       .then(([invoicesRes, domidRes, domid2Res, cylRes]) => {

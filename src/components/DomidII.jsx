@@ -67,7 +67,7 @@ const cashGiven = parseFloat(domidInput2.cashGiven) || 0;
     console.log(domidInput2);
     
     //send to backend
-    axios.post('http://localhost:5000/api/domid2Invoices', updated)
+    axios.post('https://gas-sales-app.onrender.com/api/domid2Invoices', updated)
     .then(res => {
       setOpen(true);
          setError(false)

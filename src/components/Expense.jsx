@@ -122,7 +122,7 @@ const [acct, setAcct]=useState('');
       // console.log(expenseInput);
      
 
-        axios.post('http://localhost:5000/api/expenses', expenseInput)
+        axios.post('https://gas-sales-app.onrender.com/api/expenses', expenseInput)
     .then(res => {
        setOpen(true);
       setError(false);

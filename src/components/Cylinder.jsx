@@ -69,7 +69,7 @@ setCylData(updated);
  
     }
     //send to backend
-    axios.post('http://localhost:5000/api/cylinderInvoices', updated)
+    axios.post('https://gas-sales-app.onrender.com/api/cylinderInvoices', updated)
     .then(res => {
          setOpen(true);
         setError(false)
