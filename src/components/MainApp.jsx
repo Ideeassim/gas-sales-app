@@ -14,7 +14,7 @@ import DomidI from './DomidI';
 import DomidII from './DomidII';
 import CylinderGas from './Cylinder';
 import { useNavigate } from "react-router-dom";
-import Home from './home';
+import Home from './Home';
 import { IoSettingsOutline } from "react-icons/io5";
 import Settings from './Settings';
 import AddUser from './AddUser';
