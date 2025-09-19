@@ -16,7 +16,7 @@ connectDB();
 
 const app = express();
 app.use(cors({
-  origin: "https://gassync.netlify.app/", // or restrict to your Netlify URL later
+  origin: "https://gassync.netlify.app/", 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
