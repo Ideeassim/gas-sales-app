@@ -37,7 +37,7 @@ function addToLedger() {
  setReceiptTotal(prev =>[...prev, grandTotal]);
  
              // 1. Send to backend
- axios.post('http://localhost:5000/api/invoices', updated)
+ axios.post('https://gas-sales-app.onrender.com/api/invoices', updated)
     .then(res => {
        setOpen(true);
         setError(false)

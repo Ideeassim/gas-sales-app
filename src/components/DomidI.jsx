@@ -78,7 +78,7 @@ const hasEmpty = Object.values(domidInputI).some(val => String(val).trim() === '
  
     }
     //send to backend
-    axios.post('http://localhost:5000/api/domidInvoices', updated)
+    axios.post('https://gas-sales-app.onrender.com/api/domidInvoices', updated)
     .then(res => {
       setOpen(true);
       setError(false);

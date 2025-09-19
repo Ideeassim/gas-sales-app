@@ -27,7 +27,7 @@ const navigate= useNavigate()
 
 const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const res = await axios.post("https://gas-sales-app.onrender.com/login", {
         username,
         password,
       });
@@ -35,7 +35,11 @@ const handleLogin = async () => {
       setHasLoggedIn(true);
       navigate('/dashboard')
     } catch (err) {
+      if (err.response && err.response.data && err.response.data.message) {
       setMessage("Login failed: " + err.response.data.message);
+    } else {
+      setMessage("Login failed: " + err.message); // fallback for network/other errors
+    }
       setHasLoggedIn(false);
     }
   };

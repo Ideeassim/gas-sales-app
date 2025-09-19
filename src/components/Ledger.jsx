@@ -32,11 +32,11 @@ const changeAccount= (event) =>{
   const fetchLedgerData = () => {
      setLoading(true);
      Promise.all([
-    axios.get('http://localhost:5000/api/invoices'),
-    axios.get('http://localhost:5000/api/expenses'),
-    axios.get("http://localhost:5000/api/domidInvoices"),
-    axios.get("http://localhost:5000/api/domid2Invoices"),
-    axios.get('http://localhost:5000/api/cylinderInvoices')
+    axios.get('https://gas-sales-app.onrender.com/api/invoices'),
+    axios.get('https://gas-sales-app.onrender.com/api/expenses'),
+    axios.get("https://gas-sales-app.onrender.com/api/domidInvoices"),
+    axios.get("https://gas-sales-app.onrender.com/api/domid2Invoices"),
+    axios.get('https://gas-sales-app.onrender.com/api/cylinderInvoices')
 
   ])
     .then(([invoicesRes, expensesRes, domidRes, domid2Res, cylRes]) => {
@@ -123,10 +123,10 @@ function deleteItem(invoice) {
   }else if (account === "Domid II"){
    url= `http://localhost:5000/api/domid2Invoices/${_id}`;
   }else if (account === "Cylinder Gas"){
-    url = `http://localhost:5000/api/cylinderInvoices/${_id}`;
+    url = `https://gas-sales-app.onrender.com/api/cylinderInvoices/${_id}`;
   } 
   else{
-  url=    `http://localhost:5000/api/invoices/${_id}`;
+  url=    `https://gas-sales-app.onrender.com/api/invoices/${_id}`;
   }
 
   axios.delete(url)
@@ -139,7 +139,7 @@ function deleteItem(invoice) {
 
     function deleteExp(id) {
      axios
-    .delete(`http://localhost:5000/api/expenses/${id}`)
+    .delete(`https://gas-sales-app.onrender.com/api/expenses/${id}`)
     .then(() => {
       // Remove the deleted expense from state immediately
       setExpenseToLedger(prev => prev.filter(exp => exp._id !== id));
